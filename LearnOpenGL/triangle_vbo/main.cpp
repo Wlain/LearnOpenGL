@@ -1,11 +1,13 @@
 //
 //  main.cpp
-//  create_window
+//  triangle_vbo
 //
 //  Created by william on 2020/4/9.
 //  Copyright © 2020 william. All rights reserved.
 //
-#include "../common/base.h"
+
+#include "base.h"
+#include "shader.hpp"
 
 void framebuffer_size_call(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *windows);
@@ -13,6 +15,7 @@ void processInput(GLFWwindow *windows);
 // setttings
 const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
+GLint programLocation = -1;
 
 int main(int argc, const char * argv[]) {
     
@@ -40,15 +43,32 @@ int main(int argc, const char * argv[]) {
         std::cout << "Fail to initialize the GLAD" << std::endl;
         return -1;
     }
+    Shader shader("shaders/triangle.vert", "shaders/triangle.frag");
+    
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f, // left
+        0.5f, -0.5f, 0.0f, // right
+        0.0f,  0.5f, 0.0f  // top
+    };
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     // render loop
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(1.0, 1.0, 1.0, 1.0);
+        glUseProgram(shader.getProgram());
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        programLocation = glGetUniformLocation(shader.getProgram(), "a_position");
+        glVertexAttribPointer(programLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(programLocation);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         // input
         processInput(window);
-        
         // glfw:swap buffer and poll IO events(keys pressed/released, mouse move etc.)
         glfwSwapBuffers(window);
         glfwPollEvents(); // 检查有没有触发什么事件
@@ -71,4 +91,3 @@ void processInput(GLFWwindow *windows)
         glfwSetWindowShouldClose(windows, true);
     }
 }
-
