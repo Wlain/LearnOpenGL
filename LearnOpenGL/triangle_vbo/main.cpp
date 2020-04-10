@@ -46,12 +46,17 @@ int main(int argc, const char * argv[]) {
     Shader shader("shaders/triangle.vert", "shaders/triangle.frag");
     
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left
-        0.5f, -0.5f, 0.0f, // right
-        0.0f,  0.5f, 0.0f  // top
+        // first triangle
+        -0.9f, -0.5f, 0.0f,  // left
+        -0.0f, -0.5f, 0.0f,  // right
+        -0.45f, 0.5f, 0.0f,  // top
+        // second triangle
+        0.0f, -0.5f, 0.0f,  // left
+        0.9f, -0.5f, 0.0f,  // right
+        0.45f, 0.5f, 0.0f   // top
     };
     unsigned short indices[] = {
-        0, 1, 2
+        0, 1, 2, 3, 4, 5
     };
     GLuint vbo, vao, ebo;
     // mac 4.0 以后需要绑定vao
@@ -78,7 +83,7 @@ int main(int argc, const char * argv[]) {
         glUseProgram(shader.getProgram());
         glBindVertexArray(vao);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        glDrawElements(GL_TRIANGLE_STRIP, 3, GL_UNSIGNED_SHORT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
         glUseProgram(0);
         // input
