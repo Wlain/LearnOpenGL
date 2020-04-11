@@ -66,14 +66,43 @@ int main(int argc, const char * argv[]) {
     
     float vertices[] = {
         // position         // texCoords
-         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,// top right
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,// bottom right
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,// bottom left
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f // top left
+         0.5f,  0.5f, 0.5f, 1.0f, 1.0f, // top right front
+         0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right front
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, // bottom left front
+        -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, // top left front
         
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top right back
+        -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right back
+         0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left back
+         0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left back
+        
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top right back
+         0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // top right front
+        -0.5f,  0.5f,  0.5f, 0.0f, 0.0f, // top left front
+        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left back
+        
+         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, // bottom right front
+        -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom right back
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left back
+         0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // bottom left front
+        
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top left front
+        -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom left front
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left back
+        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left back
+        
+        0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top right back
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right back
+        0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom right front
+        0.5f,  0.5f,  0.5f, 0.0f, 1.0f  // top right front
     };
     unsigned short indices[] = {
-        1, 2, 0, 3
+        0, 1, 2, 2, 3, 0,
+        4, 5, 6, 6, 7, 4,
+        8, 9, 10, 10, 11, 8,
+        12, 13, 14, 14, 15, 12,
+        16, 17, 18, 18, 19, 16,
+        20, 21, 22, 22, 23, 20
     };
     GLuint vbo, vao, ebo;
     attribs[Positions] = glGetAttribLocation(shader.getProgram(), "a_position");
@@ -136,14 +165,14 @@ int main(int argc, const char * argv[]) {
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    // 打开深度测试
+    glEnable(GL_DEPTH_TEST);
+    
     // 告诉opengl需要使用哪个纹理单元
     shader.use();
     shader.setInt("u_texture0", 0);
     shader.setInt("u_texture1", 1);
     glViewport(0, 0, width, height);
-    modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    shader.setMatrix4("u_modelMatrix", modelMatrix);
     viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
     shader.setMatrix4("u_viewMatrix", viewMatrix);
     projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SRC_WIDTH/(float)SRC_HEIGHT, 0.1f, 100.0f);
@@ -160,8 +189,13 @@ int main(int argc, const char * argv[]) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.setFloat("u_mixValue", mixValue);
+        modelMatrix = glm::mat4(1.0f);
+        modelMatrix = glm::rotate(modelMatrix, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+        shader.setMatrix4("u_modelMatrix", modelMatrix);
         glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
+        // 打开线框模式(Wireframe Mode)
+        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glBindVertexArray(0);
         glUseProgram(0);
         // input
