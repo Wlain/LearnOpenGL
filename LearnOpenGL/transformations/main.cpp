@@ -32,9 +32,17 @@ GLint attribs[NumAttribs];
 
 // stores the alpha of texture
 float mixValue = 0.2f;
-glm::mat4 projectionMatrix = glm::mat4(1.0f);;
-glm::mat4 modelMatrix = glm::mat4(1.0f);;
-glm::mat4 viewMatrix = glm::mat4(1.0f);;
+static float deltaTime = 0.0f;
+static float lastFrame = 0.0f;
+
+// mvp matrix
+glm::mat4 projectionMatrix = glm::mat4(1.0f);
+glm::mat4 modelMatrix = glm::mat4(1.0f);
+glm::mat4 viewMatrix = glm::mat4(1.0f);
+// camera
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 int main(int argc, const char * argv[]) {
     
@@ -192,6 +200,13 @@ int main(int argc, const char * argv[]) {
     // render loop
     while (!glfwWindowShouldClose(window))
     {
+        // per-frame time
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        // input
+        processInput(window);
+        // render
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
@@ -202,17 +217,13 @@ int main(int argc, const char * argv[]) {
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.setFloat("u_mixValue", mixValue);
         // camera transformation
-        float radius = 5.0f;
-        float camX = sin(glfwGetTime()) * radius;
-        float camZ = cos(glfwGetTime()) * radius;
-        viewMatrix = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
         shader.setMatrix4("u_viewMatrix", viewMatrix);
         
         glBindVertexArray(vao);
         for (unsigned int i = 0; i < 10; ++i)
         {
             modelMatrix = glm::mat4(1.0f);
-            modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2, 0.2, 0.2));
             modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
             float angle = 20.0f * i;
             modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
@@ -223,8 +234,6 @@ int main(int argc, const char * argv[]) {
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glBindVertexArray(0);
         glUseProgram(0);
-        // input
-        processInput(window);
         // glfw:swap buffer and poll IO events(keys pressed/released, mouse move etc.)
         glfwSwapBuffers(window);
         // 检查有没有触发什么事件
@@ -259,4 +268,13 @@ void processInput(GLFWwindow *windows)
         mixValue -= 0.01f;
         mixValue = fmax(0.0, mixValue);
     }
+    float cameraSpeed = 2.5f * deltaTime;
+    if (glfwGetKey(windows, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront;
+    if (glfwGetKey(windows, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront;
+    if (glfwGetKey(windows, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(windows, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
