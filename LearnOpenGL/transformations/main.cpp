@@ -104,6 +104,20 @@ int main(int argc, const char * argv[]) {
         16, 17, 18, 18, 19, 16,
         20, 21, 22, 22, 23, 20
     };
+    
+    // world space positions of our cubes
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f,  2.0f, -2.5f),
+        glm::vec3( 1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
     GLuint vbo, vao, ebo;
     attribs[Positions] = glGetAttribLocation(shader.getProgram(), "a_position");
     attribs[TexCoords] = glGetAttribLocation(shader.getProgram(), "a_texCoord");
@@ -189,11 +203,16 @@ int main(int argc, const char * argv[]) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.setFloat("u_mixValue", mixValue);
-        modelMatrix = glm::mat4(1.0f);
-        modelMatrix = glm::rotate(modelMatrix, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-        shader.setMatrix4("u_modelMatrix", modelMatrix);
         glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
+        for (unsigned int i = 0; i < 10; ++i)
+        {
+            modelMatrix = glm::mat4(1.0f);
+            modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
+            float angle = 20.0f * i;
+            modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            shader.setMatrix4("u_modelMatrix", modelMatrix);
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
+        }
         // 打开线框模式(Wireframe Mode)
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glBindVertexArray(0);
