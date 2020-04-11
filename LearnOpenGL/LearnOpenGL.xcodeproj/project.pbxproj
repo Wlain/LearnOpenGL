@@ -476,6 +476,7 @@
 		3D3A47592441FBEE004CE744 /* transformations.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = transformations.entitlements; sourceTree = "<group>"; };
 		3D3A475C2441FC65004CE744 /* transform.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = transform.vert; sourceTree = "<group>"; };
 		3D3A475D2441FC65004CE744 /* transform.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = transform.frag; sourceTree = "<group>"; };
+		3D3A475E24421781004CE744 /* logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1058,6 +1059,7 @@
 		3D3A46DB2441C7DA004CE744 /* textures */ = {
 			isa = PBXGroup;
 			children = (
+				3D3A475E24421781004CE744 /* logo.jpg */,
 				3D3A46DC2441C7DA004CE744 /* container.jpg */,
 				3D3A46DD2441C7DA004CE744 /* metal.png */,
 				3D3A46DE2441C7DA004CE744 /* toy_box_disp.png */,

@@ -167,11 +167,11 @@ int main(int argc, const char * argv[]) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-    data = stbi_load(FileSystem::getPath("resources/textures/awesomeface.png").c_str(), &width, &height, &nrChannels, 0);
+    data = stbi_load(FileSystem::getPath("resources/textures/logo.jpg").c_str(), &width, &height, &nrChannels, 0);
     stbi_set_flip_vertically_on_load(true);
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else
@@ -187,8 +187,6 @@ int main(int argc, const char * argv[]) {
     shader.setInt("u_texture0", 0);
     shader.setInt("u_texture1", 1);
     glViewport(0, 0, width, height);
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
-    shader.setMatrix4("u_viewMatrix", viewMatrix);
     projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SRC_WIDTH/(float)SRC_HEIGHT, 0.1f, 100.0f);
     shader.setMatrix4("u_projectionMatrix", projectionMatrix);
     // render loop
@@ -203,10 +201,18 @@ int main(int argc, const char * argv[]) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.setFloat("u_mixValue", mixValue);
+        // camera transformation
+        float radius = 5.0f;
+        float camX = sin(glfwGetTime()) * radius;
+        float camZ = cos(glfwGetTime()) * radius;
+        viewMatrix = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        shader.setMatrix4("u_viewMatrix", viewMatrix);
+        
         glBindVertexArray(vao);
         for (unsigned int i = 0; i < 10; ++i)
         {
             modelMatrix = glm::mat4(1.0f);
+            modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2, 0.2, 0.2));
             modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
             float angle = 20.0f * i;
             modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
