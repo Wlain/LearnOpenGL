@@ -68,7 +68,7 @@ int main(int argc, const char * argv[]) {
         
     };
     unsigned short indices[] = {
-        0, 1, 2, 0, 2, 3
+        1, 2, 0, 3
     };
     GLuint vbo, vao, ebo;
     attribs[Positions] = glGetAttribLocation(shader.getProgram(), "a_position");
@@ -151,7 +151,7 @@ int main(int argc, const char * argv[]) {
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.Use();
         glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
         glUseProgram(0);
         // input
