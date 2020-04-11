@@ -335,7 +335,8 @@
 		3D2931D9243F60B90061E671 /* shader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shader.cpp; sourceTree = "<group>"; };
 		3D2931DA243F60B90061E671 /* shader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shader.hpp; sourceTree = "<group>"; };
 		3D2931DC243F6AD40061E671 /* triangle.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = triangle.vert; sourceTree = "<group>"; };
-		3D2931DD243F6AE60061E671 /* triangle.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = triangle.frag; sourceTree = "<group>"; };
+		3D3A46B5244142BA004CE744 /* triangle1.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = triangle1.frag; sourceTree = "<group>"; };
+		3D3A46B6244142BA004CE744 /* triangle0.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = triangle0.frag; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -842,8 +843,9 @@
 		3D2931DE243F6AF60061E671 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				3D3A46B6244142BA004CE744 /* triangle0.frag */,
+				3D3A46B5244142BA004CE744 /* triangle1.frag */,
 				3D2931DC243F6AD40061E671 /* triangle.vert */,
-				3D2931DD243F6AE60061E671 /* triangle.frag */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
