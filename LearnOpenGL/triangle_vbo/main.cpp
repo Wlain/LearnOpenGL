@@ -18,11 +18,11 @@ const unsigned int SRC_HEIGHT = 600;
 
 enum AttribLocation{
     Position,
+    Color,
     NumAttribs
 };
 
 enum UniformLocation{
-    Color,
     NumUniforms
 };
 
@@ -58,16 +58,17 @@ int main(int argc, const char * argv[]) {
     Shader shader("shaders/triangle.vert", "shaders/triangle.frag");
     
     float vertices[] = {
-        0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        0.0f,  0.5f, 0.0f   // top
+        // position         // color
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
+         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // top
     };
     unsigned short indices[] = {
         0, 1, 2
     };
     GLuint vbo, vao, ebo;
     attribs[Position] = glGetAttribLocation(shader.getProgram(), "a_position");
-    uniforms[Color] = glGetUniformLocation(shader.getProgram(), "u_color");
+    attribs[Color] = glGetAttribLocation(shader.getProgram(), "a_color");
     // mac 4.0 以后需要绑定vao
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -77,7 +78,9 @@ int main(int argc, const char * argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(attribs[Position]);
-    glVertexAttribPointer(attribs[Position], 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(attribs[Position], 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(attribs[Color]);
+    glVertexAttribPointer(attribs[Color], 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
@@ -88,9 +91,6 @@ int main(int argc, const char * argv[]) {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glUseProgram(shader.getProgram());
-        float elapsedTime = glfwGetTime();
-        float greenValue = sin(elapsedTime) / 2.0f + 0.5f;
-        glUniform4f(uniforms[Color], 0.0f, greenValue, 0.0f, 1.0f);
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
