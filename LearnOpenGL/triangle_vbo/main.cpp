@@ -15,7 +15,8 @@ void processInput(GLFWwindow *windows);
 // setttings
 const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
-GLint programLocation = -1;
+GLint programLocation0 = -1;
+GLint programLocation1 = -1;
 
 int main(int argc, const char * argv[]) {
     
@@ -43,7 +44,8 @@ int main(int argc, const char * argv[]) {
         std::cout << "Fail to initialize the GLAD" << std::endl;
         return -1;
     }
-    Shader shader("shaders/triangle.vert", "shaders/triangle.frag");
+    Shader shader0("shaders/triangle.vert", "shaders/triangle0.frag");
+    Shader shader1("shaders/triangle.vert", "shaders/triangle1.frag");
     
     float firstTriangle[] = {
         // first triangle
@@ -60,7 +62,8 @@ int main(int argc, const char * argv[]) {
         0, 1, 2
     };
     GLuint vbo[2], vao[2], ebo;
-    programLocation = glGetAttribLocation(shader.getProgram(), "a_position");
+    programLocation0 = glGetAttribLocation(shader0.getProgram(), "a_position");
+    programLocation1 = glGetAttribLocation(shader1.getProgram(), "a_position");
     // mac 4.0 以后需要绑定vao
     glGenVertexArrays(2, vao);
     glGenBuffers(2, vbo);
@@ -69,16 +72,16 @@ int main(int argc, const char * argv[]) {
     glBindVertexArray(vao[0]);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(firstTriangle), firstTriangle, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(programLocation);
-    glVertexAttribPointer(programLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(programLocation0);
+    glVertexAttribPointer(programLocation0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
     glBindVertexArray(vao[1]);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(secondTriangle), secondTriangle, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(programLocation);
-    glVertexAttribPointer(programLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(programLocation1);
+    glVertexAttribPointer(programLocation1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
@@ -87,9 +90,10 @@ int main(int argc, const char * argv[]) {
     {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glUseProgram(shader.getProgram());
+        glUseProgram(shader0.getProgram());
         glBindVertexArray(vao[0]);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
+        glUseProgram(shader1.getProgram());
         glBindVertexArray(vao[1]);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
