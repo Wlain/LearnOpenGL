@@ -24,7 +24,6 @@ enum AttribLocation{
 };
 
 enum UniformLocation{
-    MvpMatrix,
     NumUniforms
 };
 
@@ -76,7 +75,6 @@ int main(int argc, const char * argv[]) {
     GLuint vbo, vao, ebo;
     attribs[Positions] = glGetAttribLocation(shader.getProgram(), "a_position");
     attribs[TexCoords] = glGetAttribLocation(shader.getProgram(), "a_texCoord");
-    uniforms[MvpMatrix] = glGetUniformLocation(shader.getProgram(), "u_mvpMatrix");
     // mac 4.0 以后需要绑定vao
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -137,8 +135,8 @@ int main(int argc, const char * argv[]) {
     stbi_image_free(data);
     // 告诉opengl需要使用哪个纹理单元
     shader.use();
-    glUniform1i(glGetUniformLocation(shader.getProgram(), "u_texture0"), 0);
-    glUniform1i(glGetUniformLocation(shader.getProgram(), "u_texture1"), 1);
+    shader.setInt("u_texture0", 0);
+    shader.setInt("u_texture1", 1);
     
         // render loop
     while (!glfwWindowShouldClose(window))
@@ -155,15 +153,14 @@ int main(int argc, const char * argv[]) {
         glm::mat4 mvpMatrix = glm::mat4(1.0f);
         mvpMatrix = glm::translate(mvpMatrix, glm::vec3(0.5f, -0.5f, 0.0f));
         mvpMatrix = glm::rotate(mvpMatrix, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        glUniformMatrix4fv(uniforms[MvpMatrix], 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+        shader.setMatrix4("u_mvpMatrix", mvpMatrix);
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
-        
         mvpMatrix = glm::mat4(1.0f);
         mvpMatrix = glm::translate(mvpMatrix, glm::vec3(-0.5f, 0.5f, 0.0f));
         float sacleAmount = sin(glfwGetTime());
         mvpMatrix = glm::scale(mvpMatrix, glm::vec3(sacleAmount, sacleAmount, sacleAmount));
-        glUniformMatrix4fv(uniforms[MvpMatrix], 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+        shader.setMatrix4("u_mvpMatrix", mvpMatrix);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
         glUseProgram(0);
