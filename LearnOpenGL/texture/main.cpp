@@ -61,10 +61,10 @@ int main(int argc, const char * argv[]) {
     
     float vertices[] = {
         // positions        // colors         // texCoords
-         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 2.0f, 2.0f,// top right
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 2.0f, 0.0f,// bottom right
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,// bottom left
-        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 2.0f // top left
+         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.55f, 0.55f,// top right
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.55f, 0.45f,// bottom right
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.45f, 0.45f,// bottom left
+        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.45f, 0.55f // top left
         
     };
     unsigned short indices[] = {
