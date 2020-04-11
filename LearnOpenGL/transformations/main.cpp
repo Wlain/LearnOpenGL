@@ -32,6 +32,9 @@ GLint attribs[NumAttribs];
 
 // stores the alpha of texture
 float mixValue = 0.2f;
+glm::mat4 projectionMatrix = glm::mat4(1.0f);;
+glm::mat4 modelMatrix = glm::mat4(1.0f);;
+glm::mat4 viewMatrix = glm::mat4(1.0f);;
 
 int main(int argc, const char * argv[]) {
     
@@ -137,8 +140,15 @@ int main(int argc, const char * argv[]) {
     shader.use();
     shader.setInt("u_texture0", 0);
     shader.setInt("u_texture1", 1);
-    
-        // render loop
+    glViewport(0, 0, width, height);
+    modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    shader.setMatrix4("u_modelMatrix", modelMatrix);
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
+    shader.setMatrix4("u_viewMatrix", viewMatrix);
+    projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SRC_WIDTH/(float)SRC_HEIGHT, 0.1f, 100.0f);
+    shader.setMatrix4("u_projectionMatrix", projectionMatrix);
+    // render loop
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -150,17 +160,7 @@ int main(int argc, const char * argv[]) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.setFloat("u_mixValue", mixValue);
-        glm::mat4 mvpMatrix = glm::mat4(1.0f);
-        mvpMatrix = glm::translate(mvpMatrix, glm::vec3(0.5f, -0.5f, 0.0f));
-        mvpMatrix = glm::rotate(mvpMatrix, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        shader.setMatrix4("u_mvpMatrix", mvpMatrix);
         glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
-        mvpMatrix = glm::mat4(1.0f);
-        mvpMatrix = glm::translate(mvpMatrix, glm::vec3(-0.5f, 0.5f, 0.0f));
-        float sacleAmount = sin(glfwGetTime());
-        mvpMatrix = glm::scale(mvpMatrix, glm::vec3(sacleAmount, sacleAmount, sacleAmount));
-        shader.setMatrix4("u_mvpMatrix", mvpMatrix);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
         glUseProgram(0);
@@ -168,7 +168,8 @@ int main(int argc, const char * argv[]) {
         processInput(window);
         // glfw:swap buffer and poll IO events(keys pressed/released, mouse move etc.)
         glfwSwapBuffers(window);
-        glfwPollEvents(); // 检查有没有触发什么事件
+        // 检查有没有触发什么事件
+        glfwPollEvents();
     }
     
     // glfw:terminate,
