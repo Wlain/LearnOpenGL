@@ -10,7 +10,6 @@
 		3D29307D243EBDA60061E671 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D29307C243EBDA60061E671 /* main.cpp */; };
 		3D2931A4243EC02B0061E671 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D293198243EC02B0061E671 /* libglfw.3.3.dylib */; };
 		3D2931A5243EC02B0061E671 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D29319E243EC02B0061E671 /* glad.c */; };
-		3D2931A6243EC02B0061E671 /* stb_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D2931A1243EC02B0061E671 /* stb_image.cpp */; };
 		3D2931C1243EE0930061E671 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D2931C0243EE0930061E671 /* main.cpp */; };
 		3D2931C7243F51ED0061E671 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D293198243EC02B0061E671 /* libglfw.3.3.dylib */; };
 		3D2931C9243F520F0061E671 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D29319E243EC02B0061E671 /* glad.c */; };
@@ -19,6 +18,14 @@
 		3D2931DF243F6B770061E671 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D293198243EC02B0061E671 /* libglfw.3.3.dylib */; };
 		3D2931E0243F6B7F0061E671 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D29319E243EC02B0061E671 /* glad.c */; };
 		3D2931E1243F6D5A0061E671 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D2931D9243F60B90061E671 /* shader.cpp */; };
+		3D3A46BE24418494004CE744 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D3A46BD24418494004CE744 /* main.cpp */; };
+		3D3A46C72441851E004CE744 /* stb_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D3A46C62441851E004CE744 /* stb_image.cpp */; };
+		3D3A46CA244185F0004CE744 /* fileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D3A46C8244185F0004CE744 /* fileSystem.cpp */; };
+		3D3A46CB244188F3004CE744 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D29319E243EC02B0061E671 /* glad.c */; };
+		3D3A46CC244188FC004CE744 /* stb_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D3A46C62441851E004CE744 /* stb_image.cpp */; };
+		3D3A46CD24418900004CE744 /* fileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D3A46C8244185F0004CE744 /* fileSystem.cpp */; };
+		3D3A46CE24418914004CE744 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D293198243EC02B0061E671 /* libglfw.3.3.dylib */; };
+		3D3A46D924418CE0004CE744 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D2931D9243F60B90061E671 /* shader.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +48,15 @@
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 		3D2931CF243F5D0B0061E671 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		3D3A46B924418494004CE744 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -322,8 +338,6 @@
 		3D293198243EC02B0061E671 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.3.dylib; sourceTree = "<group>"; };
 		3D29319C243EC02B0061E671 /* glad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glad.h; sourceTree = "<group>"; };
 		3D29319E243EC02B0061E671 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
-		3D2931A0243EC02B0061E671 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
-		3D2931A1243EC02B0061E671 /* stb_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stb_image.cpp; sourceTree = "<group>"; };
 		3D2931BE243EE0930061E671 /* create_window */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = create_window; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D2931C0243EE0930061E671 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3D2931C5243EE44D0061E671 /* LearnOpenGL.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LearnOpenGL.entitlements; sourceTree = "<group>"; };
@@ -336,6 +350,15 @@
 		3D2931DA243F60B90061E671 /* shader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shader.hpp; sourceTree = "<group>"; };
 		3D2931DC243F6AD40061E671 /* triangle.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = triangle.vert; sourceTree = "<group>"; };
 		3D3A46B5244142BA004CE744 /* triangle.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = triangle.frag; sourceTree = "<group>"; };
+		3D3A46BB24418494004CE744 /* texture */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = texture; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D3A46BD24418494004CE744 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3D3A46C2244184A2004CE744 /* texture.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = texture.entitlements; sourceTree = "<group>"; };
+		3D3A46C42441851E004CE744 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		3D3A46C62441851E004CE744 /* stb_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stb_image.cpp; sourceTree = "<group>"; };
+		3D3A46C8244185F0004CE744 /* fileSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = fileSystem.cpp; sourceTree = "<group>"; };
+		3D3A46C9244185F0004CE744 /* fileSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = fileSystem.hpp; sourceTree = "<group>"; };
+		3D3A46D724418C65004CE744 /* triangle.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = triangle.vert; sourceTree = "<group>"; };
+		3D3A46D824418C65004CE744 /* triangle.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = triangle.frag; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,6 +386,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3D3A46B824418494004CE744 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D3A46CE24418914004CE744 /* libglfw.3.3.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -374,6 +405,7 @@
 				3D29307B243EBDA60061E671 /* LearnOpenGL */,
 				3D2931BF243EE0930061E671 /* create_window */,
 				3D2931D2243F5D0B0061E671 /* triangle_vbo */,
+				3D3A46BC24418494004CE744 /* texture */,
 				3D29307A243EBDA60061E671 /* Products */,
 				3D2931C6243F51ED0061E671 /* Frameworks */,
 			);
@@ -385,6 +417,7 @@
 				3D293079243EBDA60061E671 /* LearnOpenGL */,
 				3D2931BE243EE0930061E671 /* create_window */,
 				3D2931D1243F5D0B0061E671 /* triangle_vbo */,
+				3D3A46BB24418494004CE744 /* texture */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -797,8 +830,8 @@
 		3D29319F243EC02B0061E671 /* stb */ = {
 			isa = PBXGroup;
 			children = (
-				3D2931A0243EC02B0061E671 /* stb_image.h */,
-				3D2931A1243EC02B0061E671 /* stb_image.cpp */,
+				3D3A46C32441851E004CE744 /* include */,
+				3D3A46C52441851E004CE744 /* src */,
 			);
 			path = stb;
 			sourceTree = "<group>";
@@ -825,6 +858,8 @@
 				3D2931CC243F5BE70061E671 /* base.h */,
 				3D2931D9243F60B90061E671 /* shader.cpp */,
 				3D2931DA243F60B90061E671 /* shader.hpp */,
+				3D3A46C8244185F0004CE744 /* fileSystem.cpp */,
+				3D3A46C9244185F0004CE744 /* fileSystem.hpp */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -844,6 +879,41 @@
 			children = (
 				3D3A46B5244142BA004CE744 /* triangle.frag */,
 				3D2931DC243F6AD40061E671 /* triangle.vert */,
+			);
+			path = shaders;
+			sourceTree = "<group>";
+		};
+		3D3A46BC24418494004CE744 /* texture */ = {
+			isa = PBXGroup;
+			children = (
+				3D3A46D624418C65004CE744 /* shaders */,
+				3D3A46C2244184A2004CE744 /* texture.entitlements */,
+				3D3A46BD24418494004CE744 /* main.cpp */,
+			);
+			path = texture;
+			sourceTree = "<group>";
+		};
+		3D3A46C32441851E004CE744 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				3D3A46C42441851E004CE744 /* stb_image.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		3D3A46C52441851E004CE744 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				3D3A46C62441851E004CE744 /* stb_image.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		3D3A46D624418C65004CE744 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				3D3A46D724418C65004CE744 /* triangle.vert */,
+				3D3A46D824418C65004CE744 /* triangle.frag */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -902,6 +972,23 @@
 			productReference = 3D2931D1243F5D0B0061E671 /* triangle_vbo */;
 			productType = "com.apple.product-type.tool";
 		};
+		3D3A46BA24418494004CE744 /* texture */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D3A46BF24418494004CE744 /* Build configuration list for PBXNativeTarget "texture" */;
+			buildPhases = (
+				3D3A46B724418494004CE744 /* Sources */,
+				3D3A46B824418494004CE744 /* Frameworks */,
+				3D3A46B924418494004CE744 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = texture;
+			productName = texture;
+			productReference = 3D3A46BB24418494004CE744 /* texture */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -918,6 +1005,9 @@
 						CreatedOnToolsVersion = 11.2.1;
 					};
 					3D2931D0243F5D0B0061E671 = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
+					3D3A46BA24418494004CE744 = {
 						CreatedOnToolsVersion = 11.2.1;
 					};
 				};
@@ -938,6 +1028,7 @@
 				3D293078243EBDA60061E671 /* LearnOpenGL */,
 				3D2931BD243EE0930061E671 /* create_window */,
 				3D2931D0243F5D0B0061E671 /* triangle_vbo */,
+				3D3A46BA24418494004CE744 /* texture */,
 			);
 		};
 /* End PBXProject section */
@@ -947,8 +1038,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D2931A6243EC02B0061E671 /* stb_image.cpp in Sources */,
 				3D29307D243EBDA60061E671 /* main.cpp in Sources */,
+				3D3A46CA244185F0004CE744 /* fileSystem.cpp in Sources */,
+				3D3A46C72441851E004CE744 /* stb_image.cpp in Sources */,
 				3D2931DB243F60B90061E671 /* shader.cpp in Sources */,
 				3D2931A5243EC02B0061E671 /* glad.c in Sources */,
 			);
@@ -970,6 +1062,18 @@
 				3D2931E1243F6D5A0061E671 /* shader.cpp in Sources */,
 				3D2931E0243F6B7F0061E671 /* glad.c in Sources */,
 				3D2931D4243F5D0B0061E671 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D3A46B724418494004CE744 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D3A46D924418CE0004CE744 /* shader.cpp in Sources */,
+				3D3A46CD24418900004CE744 /* fileSystem.cpp in Sources */,
+				3D3A46CC244188FC004CE744 /* stb_image.cpp in Sources */,
+				3D3A46CB244188F3004CE744 /* glad.c in Sources */,
+				3D3A46BE24418494004CE744 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1309,52 @@
 			};
 			name = Release;
 		};
+		3D3A46C024418494004CE744 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = texture/texture.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TNSMQM4897;
+				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/3rdparty/glad/include\"",
+					"\"$(SRCROOT)/3rdparty/glfw/include\"",
+					"\"$(SRCROOT)/3rdparty/glm\"",
+					"\"$(SRCROOT)/common\"",
+					"\"$(SRCROOT)/3rdparty/stb/include\"",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/3rdparty/glad/src\"",
+					"$(PROJECT_DIR)/3rdparty/glfw/lib",
+					"\"$(SRCROOT)/3rdparty/stb/src\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3D3A46C124418494004CE744 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = texture/texture.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TNSMQM4897;
+				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/3rdparty/glad/include\"",
+					"\"$(SRCROOT)/3rdparty/glfw/include\"",
+					"\"$(SRCROOT)/3rdparty/glm\"",
+					"\"$(SRCROOT)/common\"",
+					"\"$(SRCROOT)/3rdparty/stb/include\"",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/3rdparty/glad/src\"",
+					"$(PROJECT_DIR)/3rdparty/glfw/lib",
+					"\"$(SRCROOT)/3rdparty/stb/src\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1240,6 +1390,15 @@
 			buildConfigurations = (
 				3D2931D6243F5D0B0061E671 /* Debug */,
 				3D2931D7243F5D0B0061E671 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3D3A46BF24418494004CE744 /* Build configuration list for PBXNativeTarget "texture" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D3A46C024418494004CE744 /* Debug */,
+				3D3A46C124418494004CE744 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
