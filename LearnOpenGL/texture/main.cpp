@@ -31,6 +31,9 @@ enum UniformLocation{
 GLint uniforms[NumUniforms];
 GLint attribs[NumAttribs];
 
+// stores the alpha of texture
+float mixValue = 0.2f;
+
 int main(int argc, const char * argv[]) {
     
         // glfw:initialize and configure
@@ -61,10 +64,10 @@ int main(int argc, const char * argv[]) {
     
     float vertices[] = {
         // positions        // colors         // texCoords
-         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.55f, 0.55f,// top right
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.55f, 0.45f,// bottom right
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.45f, 0.45f,// bottom left
-        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.45f, 0.55f // top left
+         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,// top right
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,// bottom right
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,// bottom left
+        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f // top left
         
     };
     unsigned short indices[] = {
@@ -135,7 +138,7 @@ int main(int argc, const char * argv[]) {
     }
     stbi_image_free(data);
     // 告诉opengl需要使用哪个纹理单元
-    shader.Use();
+    shader.use();
     glUniform1i(glGetUniformLocation(shader.getProgram(), "u_texture0"), 0);
     glUniform1i(glGetUniformLocation(shader.getProgram(), "u_texture1"), 1);
     
@@ -144,12 +147,13 @@ int main(int argc, const char * argv[]) {
     {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        shader.use();
         // bind texture
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture0);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
-        shader.Use();
+        shader.setFloat("u_mixValue", mixValue);
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
@@ -177,4 +181,17 @@ void processInput(GLFWwindow *windows)
     {
         glfwSetWindowShouldClose(windows, true);
     }
+    
+    if (glfwGetKey(windows, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        mixValue += 0.01f;
+        mixValue = fmin(1.0, mixValue);
+    }
+    
+    if (glfwGetKey(windows, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        mixValue -= 0.01f;
+        mixValue = fmax(0.0, mixValue);
+    }
+    
 }

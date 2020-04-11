@@ -12,6 +12,7 @@
 #include "glm.hpp"
 #include "ext.hpp"
 #include "stb_image.h"
+#include <algorithm>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <cstdio>
