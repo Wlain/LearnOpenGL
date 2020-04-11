@@ -1,10 +1,11 @@
 //
 //  main.cpp
-//  texture
+//  transformations
 //
 //  Created by william on 2020/4/11.
 //  Copyright © 2020 william. All rights reserved.
 //
+
 #include "fileSystem.hpp"
 #include "shader.hpp"
 #include "base.h"
@@ -12,7 +13,7 @@
 void framebuffer_size_call(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *windows);
 
-    // setttings
+// setttings
 const unsigned int SRC_WIDTH = 800;
 const unsigned int SRC_HEIGHT = 600;
 
@@ -24,6 +25,7 @@ enum AttribLocation{
 };
 
 enum UniformLocation{
+    MvpMatrix,
     NumUniforms
 };
 
@@ -35,14 +37,14 @@ float mixValue = 0.2f;
 
 int main(int argc, const char * argv[]) {
     
-        // glfw:initialize and configure
+    // glfw:initialize and configure
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 设置主版本号
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // 设置次版本号
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //  uncomment this statement to fix compilation on OS X
     
-        // glfw: window creation
+    // glfw: window creation
     GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, "William-CreateWindow", nullptr, nullptr);
     if (window == nullptr)
     {
@@ -53,18 +55,18 @@ int main(int argc, const char * argv[]) {
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_call);
     
-        // glad: load all OpenGL function pointers
+    // glad: load all OpenGL function pointers
     if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Fail to initialize the GLAD" << std::endl;
         return -1;
     }
-    Shader shader("shaders/texture.vert", "shaders/texture.frag");
+    Shader shader("shaders/transform.vert", "shaders/transform.frag");
     
     float vertices[] = {
         // positions        // colors         // texCoords
-         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,// top right
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,// bottom right
+        0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,// top right
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,// bottom right
         -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,// bottom left
         -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f // top left
         
@@ -76,7 +78,8 @@ int main(int argc, const char * argv[]) {
     attribs[Positions] = glGetAttribLocation(shader.getProgram(), "a_position");
     attribs[Colors] = glGetAttribLocation(shader.getProgram(), "a_color");
     attribs[TexCoords] = glGetAttribLocation(shader.getProgram(), "a_texCoord");
-        // mac 4.0 以后需要绑定vao
+    uniforms[MvpMatrix] = glGetUniformLocation(shader.getProgram(), "u_mvpMatrix");
+    // mac 4.0 以后需要绑定vao
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ebo);
@@ -141,7 +144,7 @@ int main(int argc, const char * argv[]) {
     glUniform1i(glGetUniformLocation(shader.getProgram(), "u_texture0"), 0);
     glUniform1i(glGetUniformLocation(shader.getProgram(), "u_texture1"), 1);
     
-    // render loop
+        // render loop
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -153,6 +156,9 @@ int main(int argc, const char * argv[]) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.setFloat("u_mixValue", mixValue);
+        glm::mat4 mvpMatrix = glm::mat4(1.0);
+        mvpMatrix = glm::rotate(mvpMatrix, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(uniforms[MvpMatrix], 1, GL_FALSE, glm::value_ptr(mvpMatrix));
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
@@ -192,5 +198,4 @@ void processInput(GLFWwindow *windows)
         mixValue -= 0.01f;
         mixValue = fmax(0.0, mixValue);
     }
-    
 }
