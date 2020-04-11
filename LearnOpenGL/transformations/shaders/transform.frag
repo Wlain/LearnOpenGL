@@ -1,5 +1,4 @@
 #version 330 core
-in vec3 v_color;
 in vec2 v_texCoord;
 
 uniform float u_mixValue;

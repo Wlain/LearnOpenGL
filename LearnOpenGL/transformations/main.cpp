@@ -19,7 +19,6 @@ const unsigned int SRC_HEIGHT = 600;
 
 enum AttribLocation{
     Positions,
-    Colors,
     TexCoords,
     NumAttribs
 };
@@ -64,11 +63,11 @@ int main(int argc, const char * argv[]) {
     Shader shader("shaders/transform.vert", "shaders/transform.frag");
     
     float vertices[] = {
-        // positions        // colors         // texCoords
-        0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,// top right
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,// bottom right
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,// bottom left
-        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f // top left
+        // position         // texCoords
+         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,// top right
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,// bottom right
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,// bottom left
+        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f // top left
         
     };
     unsigned short indices[] = {
@@ -76,7 +75,6 @@ int main(int argc, const char * argv[]) {
     };
     GLuint vbo, vao, ebo;
     attribs[Positions] = glGetAttribLocation(shader.getProgram(), "a_position");
-    attribs[Colors] = glGetAttribLocation(shader.getProgram(), "a_color");
     attribs[TexCoords] = glGetAttribLocation(shader.getProgram(), "a_texCoord");
     uniforms[MvpMatrix] = glGetUniformLocation(shader.getProgram(), "u_mvpMatrix");
     // mac 4.0 以后需要绑定vao
@@ -88,11 +86,9 @@ int main(int argc, const char * argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(attribs[Positions]);
-    glVertexAttribPointer(attribs[Positions], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(attribs[Colors]);
-    glVertexAttribPointer(attribs[Colors], 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(attribs[Positions], 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(attribs[TexCoords]);
-    glVertexAttribPointer(attribs[TexCoords], 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glVertexAttribPointer(attribs[TexCoords], 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
