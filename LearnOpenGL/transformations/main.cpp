@@ -156,10 +156,18 @@ int main(int argc, const char * argv[]) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.setFloat("u_mixValue", mixValue);
-        glm::mat4 mvpMatrix = glm::mat4(1.0);
+        glm::mat4 mvpMatrix = glm::mat4(1.0f);
+        mvpMatrix = glm::translate(mvpMatrix, glm::vec3(0.5f, -0.5f, 0.0f));
         mvpMatrix = glm::rotate(mvpMatrix, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
         glUniformMatrix4fv(uniforms[MvpMatrix], 1, GL_FALSE, glm::value_ptr(mvpMatrix));
         glBindVertexArray(vao);
+        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
+        
+        mvpMatrix = glm::mat4(1.0f);
+        mvpMatrix = glm::translate(mvpMatrix, glm::vec3(-0.5f, 0.5f, 0.0f));
+        float sacleAmount = sin(glfwGetTime());
+        mvpMatrix = glm::scale(mvpMatrix, glm::vec3(sacleAmount, sacleAmount, sacleAmount));
+        glUniformMatrix4fv(uniforms[MvpMatrix], 1, GL_FALSE, glm::value_ptr(mvpMatrix));
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, 0);
         glBindVertexArray(0);
         glUseProgram(0);
