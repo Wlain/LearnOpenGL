@@ -32,6 +32,7 @@
 		3D3A47572441FBAA004CE744 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D29319E243EC02B0061E671 /* glad.c */; };
 		3D3A47582441FBBA004CE744 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D293198243EC02B0061E671 /* libglfw.3.3.dylib */; };
 		3D3A475A2441FC31004CE744 /* stb_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D3A46C62441851E004CE744 /* stb_image.cpp */; };
+		3D3A476124422402004CE744 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D3A475F24422402004CE744 /* camera.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -477,6 +478,8 @@
 		3D3A475C2441FC65004CE744 /* transform.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = transform.vert; sourceTree = "<group>"; };
 		3D3A475D2441FC65004CE744 /* transform.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = transform.frag; sourceTree = "<group>"; };
 		3D3A475E24421781004CE744 /* logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo.jpg; sourceTree = "<group>"; };
+		3D3A475F24422402004CE744 /* camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
+		3D3A476024422402004CE744 /* camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = camera.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -989,6 +992,8 @@
 				3D2931DA243F60B90061E671 /* shader.hpp */,
 				3D3A46C8244185F0004CE744 /* fileSystem.cpp */,
 				3D3A46C9244185F0004CE744 /* fileSystem.hpp */,
+				3D3A475F24422402004CE744 /* camera.cpp */,
+				3D3A476024422402004CE744 /* camera.hpp */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -1471,6 +1476,7 @@
 				3D3A47552441FBAA004CE744 /* shader.cpp in Sources */,
 				3D3A47562441FBAA004CE744 /* fileSystem.cpp in Sources */,
 				3D3A47572441FBAA004CE744 /* glad.c in Sources */,
+				3D3A476124422402004CE744 /* camera.cpp in Sources */,
 				3D3A47512441FB42004CE744 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

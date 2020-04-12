@@ -8,7 +8,9 @@
 
 #include "fileSystem.hpp"
 #include "shader.hpp"
+#include "camera.hpp"
 #include "base.h"
+
 
 void framebuffer_size_call(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -16,8 +18,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* windows);
 
 // setttings
-const unsigned int SRC_WIDTH = 800;
-const unsigned int SRC_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 enum AttribLocation{
     Positions,
@@ -32,8 +34,10 @@ enum UniformLocation{
 GLint uniforms[NumUniforms];
 GLint attribs[NumAttribs];
 
+
 // stores the alpha of texture
 float mixValue = 0.2f;
+
 // timing
 static float deltaTime = 0.0f;
 static float lastFrame = 0.0f;
@@ -42,20 +46,12 @@ static float lastFrame = 0.0f;
 glm::mat4 projectionMatrix = glm::mat4(1.0f);
 glm::mat4 modelMatrix = glm::mat4(1.0f);
 glm::mat4 viewMatrix = glm::mat4(1.0f);
+
 // camera
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastX = SCR_WIDTH / 2.0f;
+float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
-// 欧拉角
-float yaw   = -90.0f;
-float picth = 0.0f;
-float lastX = SRC_WIDTH / 2.0f;
-float lastY = SRC_HEIGHT / 2.0f;
-
-// projection
-static float fov = 45.0f;
 
 int main(int argc, const char * argv[]) {
     
@@ -67,7 +63,7 @@ int main(int argc, const char * argv[]) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //  uncomment this statement to fix compilation on OS X
     
     // glfw: window creation
-    GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, "William-CreateWindow", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "William-CreateWindow", nullptr, nullptr);
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -229,9 +225,9 @@ int main(int argc, const char * argv[]) {
         glBindTexture(GL_TEXTURE_2D, texture1);
         shader.setFloat("u_mixValue", mixValue);
         // camera transformation
-        viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        viewMatrix = camera.getViewMatrix();
         shader.setMatrix4("u_viewMatrix", viewMatrix);
-        projectionMatrix = glm::perspective(glm::radians(fov), (float)SRC_WIDTH/(float)SRC_HEIGHT, 0.1f, 100.0f);
+        projectionMatrix = glm::perspective(glm::radians(camera.mZoom), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 100.0f);
         shader.setMatrix4("u_projectionMatrix", projectionMatrix);
         glBindVertexArray(vao);
         for (unsigned int i = 0; i < 10; ++i)
@@ -253,7 +249,7 @@ int main(int argc, const char * argv[]) {
         glfwPollEvents();
     }
     
-    // glfw:terminate,
+    // glfw:terminate
     glfwTerminate();
     return 0;
 }
@@ -281,19 +277,19 @@ void processInput(GLFWwindow *windows)
         mixValue -= 0.01f;
         mixValue = fmax(0.0, mixValue);
     }
-    float cameraSpeed = 2.5f * deltaTime;
     if (glfwGetKey(windows, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        camera.processKeyboard(Camera_Movement::FORWARD, deltaTime);
     if (glfwGetKey(windows, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        camera.processKeyboard(Camera_Movement::BACKWARD, deltaTime);
     if (glfwGetKey(windows, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.processKeyboard(Camera_Movement::LEFT, deltaTime);
     if (glfwGetKey(windows, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.processKeyboard(Camera_Movement::RIGHT, deltaTime);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+    
     if (firstMouse)
     {
         lastX = xpos;
@@ -306,24 +302,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
     
-    float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-    
-    yaw   += xoffset;
-    picth += yoffset;
-    
-    picth = glm::clamp(picth, -89.0f, 89.0f);
-    
-    glm::vec3 front;
-    front.x = cos(glm::radians(yaw)) * cos(glm::radians(picth));
-    front.y = sin(glm::radians(picth));
-    front.z = sin(glm::radians(yaw)) * cos(glm::radians(picth));
-    cameraFront = glm::normalize(front);
+    camera.processMouseMovement(xoffset, yoffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    fov -= yoffset;
-    fov = glm::clamp(fov, 1.0f, 60.0f);
+    camera.processMouseScroll(yoffset);
 }

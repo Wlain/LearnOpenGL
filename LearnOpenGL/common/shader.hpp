@@ -39,7 +39,7 @@ public:
     void setMatrix4(const std::string& name, const glm::mat4& mat) const;
     
 private:
-    GLuint program;
+    GLuint mProgram;
 };
 
 

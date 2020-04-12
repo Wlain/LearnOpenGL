@@ -11,8 +11,8 @@ void framebuffer_size_call(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *windows);
 
 // setttings
-const unsigned int SRC_WIDTH = 800;
-const unsigned int SRC_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 int main(int argc, const char * argv[]) {
     
@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //  uncomment this statement to fix compilation on OS X
     
     // glfw: window creation
-    GLFWwindow* window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, "William-CreateWindow", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "William-CreateWindow", nullptr, nullptr);
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
