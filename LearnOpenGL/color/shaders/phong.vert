@@ -17,8 +17,8 @@ out vec3 v_worldPosition;
 
 void main()
 {
-    v_normal    = a_normal;
     v_texCoord  = a_texCoord;
-    v_worldPosition = (u_modelMatrix * vec4(a_position, 1.0)).xyz;
+    v_normal    = mat3(transpose(inverse(u_modelMatrix))) * a_normal;
+    v_worldPosition = vec3(u_modelMatrix * vec4(a_position, 1.0));
     gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * vec4(a_position, 1.0);
 }
