@@ -13,6 +13,8 @@
 
 #define CUBE_POSITION_LOCATION 0
 #define CUBE_TEXCOORD_LOCATION 1
+#define CUBE_NORMAL_LOCATION   2
+
 #define LIGHT_POSITION_LOCATION 0
 #define LIGHT_TEXCOORD_LOCATION 1
 
@@ -72,40 +74,40 @@ int main(int argc, const char * argv[]) {
         return -1;
     }
     // shader
-    Shader lightingShader("shaders/cube.vert", "shaders/cube.frag");
-    Shader lampShader("shaders/light.vert", "shaders/light.frag");
+    Shader phongShader("shaders/phong.vert", "shaders/phong.frag");
+    Shader lightShader("shaders/light.vert", "shaders/light.frag");
     
     float vertices[] = {
-        // position         // texCoords
-        0.5f,  0.5f, 0.5f, 1.0f, 1.0f, // top right front
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, // bottom right front
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, // bottom left front
-        -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, // top left front
+        // position        // texCoord  // normal
+         0.5f,  0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right front
+         0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom right front
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left front
+        -0.5f,  0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top left front
         
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top right back
-        -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right back
-        0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left back
-        0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left back
+        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right back
+        -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom right back
+         0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left back
+         0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top left back
         
-        0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top right back
-        0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // top right front
-        -0.5f,  0.5f,  0.5f, 0.0f, 0.0f, // top left front
-        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left back
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right back
+         0.5f,  0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // top right front
+        -0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // top left front
+        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top left back
         
-        0.5f, -0.5f,  0.5f, 1.0f, 1.0f, // bottom right front
-        -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom right back
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left back
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // bottom left front
+         0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // bottom right front
+        -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom right back
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left back
+         0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // bottom left front
         
-        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top left front
-        -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom left front
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom left back
-        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top left back
+        -0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top left front
+        -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left front
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left back
+        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top left back
         
-        0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top right back
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom right back
-        0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom right front
-        0.5f,  0.5f,  0.5f, 0.0f, 1.0f  // top right front
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right back
+         0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom right back
+         0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom right front
+         0.5f,  0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f  // top right front
     };
     unsigned short indices[] = {
         0, 1, 2, 2, 3, 0,
@@ -126,9 +128,11 @@ int main(int argc, const char * argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(CUBE_POSITION_LOCATION);
-    glVertexAttribPointer(CUBE_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glVertexAttribPointer(CUBE_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(CUBE_TEXCOORD_LOCATION);
-    glVertexAttribPointer(CUBE_TEXCOORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(CUBE_TEXCOORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(CUBE_NORMAL_LOCATION);
+    glVertexAttribPointer(CUBE_NORMAL_LOCATION, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
@@ -136,9 +140,7 @@ int main(int argc, const char * argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(LIGHT_POSITION_LOCATION);
-    glVertexAttribPointer(LIGHT_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(LIGHT_TEXCOORD_LOCATION);
-    glVertexAttribPointer(LIGHT_TEXCOORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(LIGHT_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glBindVertexArray(0);
@@ -189,9 +191,11 @@ int main(int argc, const char * argv[]) {
     // 打开深度测试
     glEnable(GL_DEPTH_TEST);
     
-    lightingShader.use();
-    lightingShader.setVector3("u_objectColor", 1.0f, 0.5f, 0.31f);
-    lightingShader.setVector3("u_lightColor", 1.0f, 1.0f, 1.0f);
+    phongShader.use();
+    phongShader.setVector3("u_ambientColor", 1.0f, 0.0f, 0.0f);
+    phongShader.setVector3("u_diffuseColor", 0.0f, 1.0f, 0.0f);
+    phongShader.setVector3("u_specularColor", 0.0f, 0.0f, 1.0f);
+    phongShader.setVector3("u_lightPosition", lightPosition);
     
     // render loop
     while (!glfwWindowShouldClose(window))
@@ -205,25 +209,26 @@ int main(int argc, const char * argv[]) {
         // render
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        lightingShader.use();
+        phongShader.use();
+        phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
         // camera transformation
         viewMatrix = camera.getViewMatrix();
-        lightingShader.setMatrix4("u_viewMatrix", viewMatrix);
+        phongShader.setMatrix4("u_viewMatrix", viewMatrix);
         projectionMatrix = glm::perspective(glm::radians(camera.mZoom), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 100.0f);
-        lightingShader.setMatrix4("u_projectionMatrix", projectionMatrix);
+        phongShader.setMatrix4("u_projectionMatrix", projectionMatrix);
         modelMatrix = glm::mat4(1.0f);
-        lightingShader.setMatrix4("u_modelMatrix", modelMatrix);
+        phongShader.setMatrix4("u_modelMatrix", modelMatrix);
         glBindVertexArray(cubeVao);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
         
         // draw the lamp object
-        lampShader.use();
-        lampShader.setMatrix4("u_projectionMatrix", projectionMatrix);
-        lampShader.setMatrix4("u_viewMatrix", viewMatrix);
+        lightShader.use();
+        lightShader.setMatrix4("u_projectionMatrix", projectionMatrix);
+        lightShader.setMatrix4("u_viewMatrix", viewMatrix);
         modelMatrix = glm::mat4(1.0);
         modelMatrix = glm::translate(modelMatrix, lightPosition);
         modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
-        lampShader.setMatrix4("u_modelMatrix", modelMatrix);
+        lightShader.setMatrix4("u_modelMatrix", modelMatrix);
         glBindVertexArray(lightVao);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
         // 打开线框模式(Wireframe Mode)
