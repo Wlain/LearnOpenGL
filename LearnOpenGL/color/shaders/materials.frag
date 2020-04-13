@@ -2,6 +2,7 @@
 struct Material {
     sampler2D diffuse;
     sampler2D specular;
+    sampler2D emission;
     float shinness;
 };
 
@@ -41,6 +42,9 @@ void main()
     vec3 viewDir = normalize(u_eyePosotion - v_worldPosition);
     vec3 specularColor = specularMaterial * u_light.specular * pow(max(0.0, dot(viewDir, reflectDir)), shininess);
     
-    fragColor = vec4(ambientColor + diffuseColor + specularColor, 1.0);
+    // emission
+    vec3 emissionColor = vec3(texture(u_material.emission, v_texCoord));
+    
+    fragColor = vec4(ambientColor + diffuseColor + specularColor + emissionColor, 1.0);
 }
 

@@ -151,9 +151,11 @@ int main(int argc, const char * argv[]) {
     
     GLuint diffuseMap = loadTexture(FileSystem::getPath("resources/textures/container2.png").c_str());
     GLuint specularMap = loadTexture(FileSystem::getPath("resources/textures/container2_specular.png").c_str());
+    GLuint emissionMap = loadTexture(FileSystem::getPath("resources/textures/matrix.jpg").c_str());
     phongShader.use();
     phongShader.setInt("u_material.diffuse", 0);
     phongShader.setInt("u_material.specular", 1);
+    phongShader.setInt("u_material.emission", 2);
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -173,11 +175,15 @@ int main(int argc, const char * argv[]) {
         phongShader.setVector3("u_light.position", lightPosition);
         phongShader.setFloat("u_material.shinness", 64.0f);
         phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
+        
         // bind texture
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, emissionMap);
+        
         // camera transformation
         viewMatrix = camera.getViewMatrix();
         phongShader.setMatrix4("u_viewMatrix", viewMatrix);
@@ -185,6 +191,7 @@ int main(int argc, const char * argv[]) {
         phongShader.setMatrix4("u_projectionMatrix", projectionMatrix);
         modelMatrix = glm::mat4(1.0f);
         phongShader.setMatrix4("u_modelMatrix", modelMatrix);
+        
         glBindVertexArray(cubeVao);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
         
