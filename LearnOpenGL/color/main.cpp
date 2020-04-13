@@ -22,6 +22,7 @@ void framebuffer_size_call(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* windows);
+GLuint loadTexture(const char* path);
 
 // setttings
 const unsigned int SCR_WIDTH = 800;
@@ -145,51 +146,13 @@ int main(int argc, const char * argv[]) {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glBindVertexArray(0);
     
-    // load and create a texture0
-    GLuint texture0;
-    glGenTextures(1, &texture0);
-    glBindTexture(GL_TEXTURE_2D, texture0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
-    int width, height, nrChannels;
-    GLubyte *data = stbi_load(FileSystem::getPath("resources/textures/container.jpg").c_str(), &width, &height, &nrChannels, 0);
-    stbi_set_flip_vertically_on_load(true);
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
-    
-    // load and create a texture1
-    GLuint texture1;
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
-    data = stbi_load(FileSystem::getPath("resources/textures/logo.jpg").c_str(), &width, &height, &nrChannels, 0);
-    stbi_set_flip_vertically_on_load(true);
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
     // 打开深度测试
     glEnable(GL_DEPTH_TEST);
+    
+    GLuint diffuseMap = loadTexture(FileSystem::getPath("resources/textures/container2.png").c_str());
+    
+    phongShader.use();
+    phongShader.setInt("material.diffuse", 0);
     
     // render loop
     while (!glfwWindowShouldClose(window))
@@ -204,15 +167,16 @@ int main(int argc, const char * argv[]) {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         phongShader.use();
-        phongShader.setVector3("u_light.ambient", 1.0f, 1.0f, 1.0f);
-        phongShader.setVector3("u_light.diffuse", 1.0f, 1.0f, 1.0f);
+        phongShader.setVector3("u_light.ambient", 0.2f, 0.2f, 0.2f);
+        phongShader.setVector3("u_light.diffuse", 0.5f, 0.5f, 0.5f);
         phongShader.setVector3("u_light.specular", 1.0f, 1.0f, 1.0f);
         phongShader.setVector3("u_light.position", lightPosition);
-        phongShader.setVector3("u_material.ambient",0.0f, 0.1f, 0.06f);
-        phongShader.setVector3("u_material.diffuse", 0.0f, 0.50980392f, 0.50980392f);
-        phongShader.setVector3("u_material.specular", 0.50196078f, 0.50196078f, 0.50196078f);
+        phongShader.setVector3("u_material.specular", 0.5f, 0.5f, 0.5f);
         phongShader.setFloat("u_material.shinness", 64.0f);
         phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
+        // bind texture
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, diffuseMap);
         // camera transformation
         viewMatrix = camera.getViewMatrix();
         phongShader.setMatrix4("u_viewMatrix", viewMatrix);
@@ -288,4 +252,39 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.processMouseScroll(yoffset);
+}
+
+
+GLuint loadTexture(const char* path)
+{
+    // load and create a texture0
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    
+    int width, height, nrChannels;
+    GLubyte *data = stbi_load(path, &width, &height, &nrChannels, 0);
+    stbi_set_flip_vertically_on_load(true);
+    if (data)
+    {
+        GLenum format;
+        if (nrChannels == 1)
+            format = GL_RED;
+        if (nrChannels == 3)
+            format = GL_RGB;
+        else if (nrChannels == 4)
+            format = GL_RGBA;
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        stbi_image_free(data);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    return textureID;
 }
