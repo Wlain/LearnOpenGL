@@ -55,7 +55,7 @@ int main(int argc, const char * argv[]) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //  uncomment this statement to fix compilation on OS X
     
     // glfw: window creation
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "William-Color", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "William-Light", nullptr, nullptr);
     if (window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -74,7 +74,7 @@ int main(int argc, const char * argv[]) {
         return -1;
     }
     // shader
-    Shader phongShader("shaders/phong.vert", "shaders/phong.frag");
+    Shader phongShader("shaders/materials.vert", "shaders/materials.frag");
     Shader lightShader("shaders/light.vert", "shaders/light.frag");
     
     float vertices[] = {
@@ -192,10 +192,14 @@ int main(int argc, const char * argv[]) {
     glEnable(GL_DEPTH_TEST);
     
     phongShader.use();
-    phongShader.setVector3("u_ambientColor", 1.0f, 0.0f, 0.0f);
-    phongShader.setVector3("u_diffuseColor", 0.0f, 1.0f, 0.0f);
-    phongShader.setVector3("u_specularColor", 0.0f, 0.0f, 1.0f);
-    phongShader.setVector3("u_lightPosition", lightPosition);
+    phongShader.setVector3("u_light.ambient", 1.0f, 0.0f, 0.0f);
+    phongShader.setVector3("u_light.diffuse", 0.0f, 1.0f, 0.0f);
+    phongShader.setVector3("u_light.specular", 0.0f, 0.0f, 1.0f);
+    phongShader.setVector3("u_light.position", lightPosition);
+    phongShader.setVector3("u_material.ambient", 0.1f, 0.1f, 0.1f);
+    phongShader.setVector3("u_material.diffuse", 0.6f, 0.6f, 0.6f);
+    phongShader.setVector3("u_material.specular", 1.0f, 1.0f, 1.0f);
+    phongShader.setFloat("u_material.shinness", 64.0f);
     
     // render loop
     while (!glfwWindowShouldClose(window))

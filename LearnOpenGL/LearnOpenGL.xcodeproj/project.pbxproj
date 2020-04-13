@@ -503,6 +503,8 @@
 		3D3A477C2442CFBB004CE744 /* phong.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = phong.frag; sourceTree = "<group>"; };
 		3D3A477D2442CFBB004CE744 /* light.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = light.frag; sourceTree = "<group>"; };
 		3D3A477E2442CFBB004CE744 /* light.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = light.vert; sourceTree = "<group>"; };
+		3D3A477F2443F400004CE744 /* materials.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = materials.vert; sourceTree = "<group>"; };
+		3D3A47802443F400004CE744 /* materials.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = materials.frag; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1334,6 +1336,8 @@
 		3D3A476E2442C442004CE744 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				3D3A47802443F400004CE744 /* materials.frag */,
+				3D3A477F2443F400004CE744 /* materials.vert */,
 				3D3A477C2442CFBB004CE744 /* phong.frag */,
 				3D3A477B2442CFBB004CE744 /* phong.vert */,
 				3D3A477D2442CFBB004CE744 /* light.frag */,
