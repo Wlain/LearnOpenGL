@@ -152,8 +152,8 @@ int main(int argc, const char * argv[]) {
     GLuint diffuseMap = loadTexture(FileSystem::getPath("resources/textures/container2.png").c_str());
     GLuint specularMap = loadTexture(FileSystem::getPath("resources/textures/container2_specular.png").c_str());
     phongShader.use();
-    phongShader.setInt("material.diffuse", 0);
-    phongShader.setInt("material.specular", 1);
+    phongShader.setInt("u_material.diffuse", 0);
+    phongShader.setInt("u_material.specular", 1);
     // render loop
     while (!glfwWindowShouldClose(window))
     {
