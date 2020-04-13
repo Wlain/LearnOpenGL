@@ -1,7 +1,7 @@
 #version 330 core
 struct Material {
     sampler2D diffuse;
-    vec3 specular;
+    sampler2D specular;
     float shinness;
 };
 
@@ -36,7 +36,7 @@ void main()
     
     // specular
     float shininess = u_material.shinness;
-    vec3 specularMaterial = u_material.specular;
+    vec3 specularMaterial = vec3(texture(u_material.specular, v_texCoord));
     vec3 reflectDir = reflect(-lightDir, normalDir);
     vec3 viewDir = normalize(u_eyePosotion - v_worldPosition);
     vec3 specularColor = specularMaterial * u_light.specular * pow(max(0.0, dot(viewDir, reflectDir)), shininess);

@@ -150,10 +150,10 @@ int main(int argc, const char * argv[]) {
     glEnable(GL_DEPTH_TEST);
     
     GLuint diffuseMap = loadTexture(FileSystem::getPath("resources/textures/container2.png").c_str());
-    
+    GLuint specularMap = loadTexture(FileSystem::getPath("resources/textures/container2_specular.png").c_str());
     phongShader.use();
     phongShader.setInt("material.diffuse", 0);
-    
+    phongShader.setInt("material.specular", 1);
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -171,12 +171,13 @@ int main(int argc, const char * argv[]) {
         phongShader.setVector3("u_light.diffuse", 0.5f, 0.5f, 0.5f);
         phongShader.setVector3("u_light.specular", 1.0f, 1.0f, 1.0f);
         phongShader.setVector3("u_light.position", lightPosition);
-        phongShader.setVector3("u_material.specular", 0.5f, 0.5f, 0.5f);
         phongShader.setFloat("u_material.shinness", 64.0f);
         phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
         // bind texture
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, specularMap);
         // camera transformation
         viewMatrix = camera.getViewMatrix();
         phongShader.setMatrix4("u_viewMatrix", viewMatrix);
