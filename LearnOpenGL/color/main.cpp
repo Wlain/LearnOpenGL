@@ -204,19 +204,13 @@ int main(int argc, const char * argv[]) {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         phongShader.use();
-        glm::vec3 lightColor;
-        lightColor.r = sin(glfwGetTime() * 2.0f);
-        lightColor.g = sin(glfwGetTime() * 0.7f);
-        lightColor.b = sin(glfwGetTime() * 1.3f);
-        glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-        glm::vec3 ambientColor = lightColor * glm::vec3(0.2f);
-        phongShader.setVector3("u_light.ambient", ambientColor);
-        phongShader.setVector3("u_light.diffuse", diffuseColor);
+        phongShader.setVector3("u_light.ambient", 1.0f, 1.0f, 1.0f);
+        phongShader.setVector3("u_light.diffuse", 1.0f, 1.0f, 1.0f);
         phongShader.setVector3("u_light.specular", 1.0f, 1.0f, 1.0f);
         phongShader.setVector3("u_light.position", lightPosition);
-        phongShader.setVector3("u_material.ambient", 1.0f, 0.5f, 0.31f);
-        phongShader.setVector3("u_material.diffuse", 1.0f, 0.5f, 0.31f);
-        phongShader.setVector3("u_material.specular", 0.5f, 0.5f, 0.5f);
+        phongShader.setVector3("u_material.ambient",0.0f, 0.1f, 0.06f);
+        phongShader.setVector3("u_material.diffuse", 0.0f, 0.50980392f, 0.50980392f);
+        phongShader.setVector3("u_material.specular", 0.50196078f, 0.50196078f, 0.50196078f);
         phongShader.setFloat("u_material.shinness", 64.0f);
         phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
         // camera transformation
