@@ -75,7 +75,7 @@ int main(int argc, const char * argv[]) {
         return -1;
     }
     // shader
-    Shader phongShader("shaders/materials.vert", "shaders/materials.frag");
+    Shader phongShader("shaders/pointLight.vert", "shaders/pointLight.frag");
     Shader lightShader("shaders/light.vert", "shaders/light.frag");
     
     float vertices[] = {
@@ -185,7 +185,7 @@ int main(int argc, const char * argv[]) {
         phongShader.setVector3("u_light.ambient", 0.2f, 0.2f, 0.2f);
         phongShader.setVector3("u_light.diffuse", 0.5f, 0.5f, 0.5f);
         phongShader.setVector3("u_light.specular", 1.0f, 1.0f, 1.0f);
-        phongShader.setVector3("u_light.direction", -0.2f, -1.0f, -0.3f);
+        phongShader.setVector3("u_light.position", lightPosition);
         phongShader.setFloat("u_material.shinness", 64.0f);
         phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
         
