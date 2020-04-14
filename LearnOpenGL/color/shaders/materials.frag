@@ -7,7 +7,8 @@ struct Material {
 };
 
 struct Light {
-    vec3 position;
+//    vec3 position;
+    vec3 direction;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -32,7 +33,8 @@ void main()
     // diffuse
     vec3 diffuseMaterial = vec3(texture(u_material.diffuse, v_texCoord));
     vec3 normalDir = normalize(v_normal);
-    vec3 lightDir = normalize(u_light.position - v_worldPosition);
+//    vec3 lightDir = normalize(u_light.position - v_worldPosition);
+    vec3 lightDir = normalize(-u_light.direction);
     vec3 diffuseColor = diffuseMaterial * u_light.diffuse * max(0.0, dot(lightDir, normalDir));
     
     // specular
@@ -45,6 +47,6 @@ void main()
     // emission
     vec3 emissionColor = vec3(texture(u_material.emission, v_texCoord));
     
-    fragColor = vec4(ambientColor + diffuseColor + specularColor + emissionColor, 1.0);
+    fragColor = vec4(ambientColor + diffuseColor + specularColor, 1.0);
 }
 

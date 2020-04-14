@@ -118,6 +118,19 @@ int main(int argc, const char * argv[]) {
         16, 17, 18, 18, 19, 16,
         20, 21, 22, 22, 23, 20
     };
+    // positions all containers
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f,  2.0f, -2.5f),
+        glm::vec3( 1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
     GLuint cubeVao, lightVao, vbo, ebo;
     // mac 4.0 以后需要绑定vao
     glGenVertexArrays(1, &cubeVao);
@@ -172,7 +185,7 @@ int main(int argc, const char * argv[]) {
         phongShader.setVector3("u_light.ambient", 0.2f, 0.2f, 0.2f);
         phongShader.setVector3("u_light.diffuse", 0.5f, 0.5f, 0.5f);
         phongShader.setVector3("u_light.specular", 1.0f, 1.0f, 1.0f);
-        phongShader.setVector3("u_light.position", lightPosition);
+        phongShader.setVector3("u_light.direction", -0.2f, -1.0f, -0.3f);
         phongShader.setFloat("u_material.shinness", 64.0f);
         phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
         
@@ -189,12 +202,15 @@ int main(int argc, const char * argv[]) {
         phongShader.setMatrix4("u_viewMatrix", viewMatrix);
         projectionMatrix = glm::perspective(glm::radians(camera.mZoom), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 100.0f);
         phongShader.setMatrix4("u_projectionMatrix", projectionMatrix);
-        modelMatrix = glm::mat4(1.0f);
-        phongShader.setMatrix4("u_modelMatrix", modelMatrix);
-        
         glBindVertexArray(cubeVao);
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
-        
+        for (GLuint i = 0; i < 10; ++i) {
+            modelMatrix = glm::mat4(1.0);
+            modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
+            float angle = 20.0f * i;
+            modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            phongShader.setMatrix4("u_modelMatrix", modelMatrix);
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
+        }
         // draw the lamp object
         lightShader.use();
         lightShader.setMatrix4("u_projectionMatrix", projectionMatrix);
