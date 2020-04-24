@@ -75,7 +75,7 @@ int main(int argc, const char * argv[]) {
         return -1;
     }
     // shader
-    Shader phongShader("shaders/pointLight.vert", "shaders/pointLight.frag");
+    Shader phongShader("shaders/spotLight.vert", "shaders/spotLight.frag");
     Shader lightShader("shaders/light.vert", "shaders/light.frag");
     
     float vertices[] = {
@@ -182,12 +182,20 @@ int main(int argc, const char * argv[]) {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         phongShader.use();
-        phongShader.setVector3("u_light.ambient", 0.2f, 0.2f, 0.2f);
-        phongShader.setVector3("u_light.diffuse", 0.5f, 0.5f, 0.5f);
-        phongShader.setVector3("u_light.specular", 1.0f, 1.0f, 1.0f);
-        phongShader.setVector3("u_light.position", lightPosition);
-        phongShader.setFloat("u_material.shinness", 64.0f);
+        phongShader.setVector3("u_light.position", camera.mPosition);
+        phongShader.setVector3("u_light.direction", camera.mFront);
+        phongShader.setFloat("u_light.cutOff", glm::cos(glm::radians(12.5f)));
         phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
+        
+        phongShader.setVector3("u_light.ambient", 0.1f, 0.1f, 0.1f);
+        phongShader.setVector3("u_light.diffuse", 0.8f, 0.8f, 0.8f);
+        phongShader.setVector3("u_light.specular", 1.0f, 1.0f, 1.0f);
+        phongShader.setFloat("u_light.constant", 1.0f);
+        phongShader.setFloat("u_light_linear", 0.09f);
+        phongShader.setFloat("u_light.quadratic", 0.032f);
+    
+        phongShader.setFloat("u_material.shinness", 64.0f);
+
         
         // bind texture
         glActiveTexture(GL_TEXTURE0);
