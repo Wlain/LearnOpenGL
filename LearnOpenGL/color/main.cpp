@@ -185,6 +185,7 @@ int main(int argc, const char * argv[]) {
         phongShader.setVector3("u_light.position", camera.mPosition);
         phongShader.setVector3("u_light.direction", camera.mFront);
         phongShader.setFloat("u_light.cutOff", glm::cos(glm::radians(12.5f)));
+        phongShader.setFloat("u_light.outCutOff", glm::cos(glm::radians(17.5f)));
         phongShader.setVector3("u_eyePosotion", camera.getCameraPosition());
         
         phongShader.setVector3("u_light.ambient", 0.1f, 0.1f, 0.1f);
