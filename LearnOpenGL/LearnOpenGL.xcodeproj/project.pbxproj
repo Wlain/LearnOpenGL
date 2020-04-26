@@ -505,6 +505,8 @@
 		3D3A477E2442CFBB004CE744 /* light.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = light.vert; sourceTree = "<group>"; };
 		3D3A477F2443F400004CE744 /* materials.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = materials.vert; sourceTree = "<group>"; };
 		3D3A47802443F400004CE744 /* materials.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = materials.frag; sourceTree = "<group>"; };
+		3D52752024550EF600186786 /* multipleLights.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = multipleLights.vert; sourceTree = "<group>"; };
+		3D52752124550EF600186786 /* multipleLights.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = multipleLights.frag; sourceTree = "<group>"; };
 		3D54CAC9244542DC0020A849 /* pointLight.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = pointLight.vert; sourceTree = "<group>"; };
 		3D54CACA244542DC0020A849 /* pointLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = pointLight.frag; sourceTree = "<group>"; };
 		3D54CACB244543D50020A849 /* spotLight.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = spotLight.frag; sourceTree = "<group>"; };
@@ -1340,6 +1342,8 @@
 		3D3A476E2442C442004CE744 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				3D52752124550EF600186786 /* multipleLights.frag */,
+				3D52752024550EF600186786 /* multipleLights.vert */,
 				3D54CACB244543D50020A849 /* spotLight.frag */,
 				3D54CACC244543D50020A849 /* spotLight.vert */,
 				3D54CACA244542DC0020A849 /* pointLight.frag */,
